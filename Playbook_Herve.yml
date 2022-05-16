@@ -1,0 +1,29 @@
+---
+-name: exercice 1
+  hosts: test
+  remote_user: root
+  tasks:
+     -name: création de /home1 ... /home9
+       file:
+         path: /home{{ item }}
+         state: directory
+         owner: root
+         group: root
+         mode: 0755
+  loop: "{{ range ( 1 , 9 + 1 ) | list }}"
+     -name: création de /auto
+       file:
+         path: /auto
+         state: directory
+         owner: root
+         group: root
+         mode: 0555
+     -name: création de /auto/home1 ... /auto/home9
+       file:
+         path: /auto/home{{ item }}
+         src: /home{{ item }}
+         state: link
+         owner: root
+         group: root
+       loop: "{{ range ( 1 , 9 + 1 ) | list }}"
+
